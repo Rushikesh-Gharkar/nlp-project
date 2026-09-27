@@ -108,7 +108,9 @@ class TranslationEngine:
                 if os.path.exists(snapshots_path):
                     snapshots = [os.path.join(snapshots_path, s) for s in os.listdir(snapshots_path)]
                     for s in snapshots:
-                        if os.path.isdir(s) and (os.path.exists(os.path.join(s, "pytorch_model.bin")) or os.path.exists(os.path.join(s, "model.safetensors"))):
+                        has_model = os.path.exists(os.path.join(s, "pytorch_model.bin")) or os.path.exists(os.path.join(s, "model.safetensors"))
+                        has_tokenizer = os.path.exists(os.path.join(s, "source.spm"))
+                        if os.path.isdir(s) and has_model and has_tokenizer:
                             load_target = s
                             logger.info(f"Found complete local snapshot for '{lang_code}' at: {load_target}")
                             break
